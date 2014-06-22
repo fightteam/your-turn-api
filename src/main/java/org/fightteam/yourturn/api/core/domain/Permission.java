@@ -4,14 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * [description]
- *
- * @author faith
- * @since 0.0.1
+ * Created by excalibur on 2014/6/23.
  */
-@Getter
 @Setter
-public class Role extends Entity<Long> {
+@Getter
+public class Permission extends Entity<Long> {
     private String name;
     private String title;
 
