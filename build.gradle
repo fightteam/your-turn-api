@@ -48,6 +48,7 @@ dependencies {
 	compile "joda-time:joda-time:$jodaVersion",
 		"com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 
+    providedCompile "org.projectlombok:lombok:1.12.4"
 
 	// 
 	providedCompile "javax.servlet:javax.servlet-api:3.0.1",
