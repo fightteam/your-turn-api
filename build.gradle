@@ -1,0 +1,62 @@
+
+apply plugin: 'java'
+apply plugin: "war"
+
+
+
+configurations {
+    all*.exclude group: "commons-logging"
+    all*.exclude module: "slf4j-log4j12"
+}
+
+
+ // 项目构建JDK版本
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+
+ // 编译参数
+[compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:none", "-g"]
+[compileJava, javadoc, compileTestJava]*.options*.encoding = 'UTF-8'
+
+// 仓库
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+ 	// Spring
+    compile "org.springframework:spring-aop:$springVersion",
+    	"org.springframework:spring-core:$springVersion",
+    	"org.springframework:spring-beans:$springVersion",
+    	"org.springframework:spring-context:$springVersion"
+
+    // Logging
+    compile "org.slf4j:slf4j-api:$slf4jVersion",
+        "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+    runtime "org.apache.logging.log4j:log4j-core:$log4jVersion"
+
+    // mysql
+	compile	"mysql:mysql-connector-java:$mysqlVersion"
+
+
+	// library
+	compile "joda-time:joda-time:$jodaVersion",
+		"com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+
+
+	// 
+	providedCompile "javax.servlet:javax.servlet-api:3.0.1",
+                'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+    // Testing
+    testCompile "junit:junit:$junitVersion",
+        "org.hamcrest:hamcrest-library:$hamcrestVersion"
+}
+
+task wrapper(type:Wrapper){
+	gradleVersion= '1.11'
+}
