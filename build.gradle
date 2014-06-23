@@ -59,7 +59,8 @@ dependencies {
                 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
     // Testing
     testCompile "junit:junit:$junitVersion",
-        "org.hamcrest:hamcrest-library:$hamcrestVersion"
+        "org.hamcrest:hamcrest-library:$hamcrestVersion",
+            "org.springframework:spring-test:$springVersion"
 }
 
 task wrapper(type:Wrapper){
