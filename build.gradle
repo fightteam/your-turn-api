@@ -44,6 +44,10 @@ dependencies {
 	compile	"mysql:mysql-connector-java:$mysqlVersion"
 
 
+    // spring mvc
+    compile "org.springframework:spring-webmvc:$springVersion"
+    compile "org.springframework:spring-web:$springVersion"
+
 	// library
 	compile "joda-time:joda-time:$jodaVersion",
 		"com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"

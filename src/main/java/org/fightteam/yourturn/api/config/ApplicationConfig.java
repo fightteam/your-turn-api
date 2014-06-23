@@ -3,7 +3,7 @@ package org.fightteam.yourturn.api.config;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by excalibur on 2014/6/23.
+ * spring 的javaconfig配置
  */
 @Configuration
 public class ApplicationConfig {
