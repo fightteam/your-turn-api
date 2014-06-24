@@ -75,21 +75,17 @@ dependencies {
 
 processResources {
     println env
-    from(sourceSets.main.resources.srcDirs) {
-        filter{ String line -> line.replace("", "222") }
+    println buildDir.absolutePath
+    println buildDir
+    println buildDir.name
+    println sourceSets.main.resources.name
+    println sourceSets.main.resources.asPath
+    from("src/config/$env") {
+        into sourceSets.main.resources.srcDirs
     }
 }
 
-sourceSets {
-    main {
-        output.resourcesDir = "${buildDir}/classes/main"
-        java {
-            resources {
-                srcDirs = ["src/main/resources/public", "src/main/resources/$env"]
-            }
-        }
-    }
-}
+
 task wrapper(type:Wrapper){
 	gradleVersion= '1.11'
 }
