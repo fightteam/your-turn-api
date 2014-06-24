@@ -1,14 +1,40 @@
 package org.fightteam.yourturn.api.test;
 
 import org.fightteam.yourturn.api.config.ApplicationConfig;
+import org.fightteam.yourturn.api.config.DataSourceConfig;
+import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 /**
- * Created by excalibur on 2014/6/23.
+ * 单元测试基础类
+ *
+ * 主要仿制了一个jndi来模拟Tomcat的Jndi数据连接池
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ApplicationConfig.class})
-public class SpringTest {
+@ContextConfiguration(classes = {ApplicationConfig.class, DataSourceConfig.class})
+public abstract class SpringTest {
+
+    static {
+        //创建测试用的DataSource
+        EmbeddedDatabaseBuilder databaseBuilder = new EmbeddedDatabaseBuilder();
+        DataSource dataSource = databaseBuilder.setType(EmbeddedDatabaseType.HSQL).build();
+        try {
+            SimpleNamingContextBuilder builder = SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+            builder.bind("java:/comp/env/jdbc/database", dataSource);
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
