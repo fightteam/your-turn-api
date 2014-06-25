@@ -85,6 +85,15 @@ processResources {
     }
 }
 
+task copyConfiguration << {
+    println "Target environment: $env"
+
+    copy {
+        from "src/main/config/$env"
+        into "src/main/resources"
+        include "**/*"
+    }
+}
 
 task wrapper(type:Wrapper){
 	gradleVersion= '1.11'
