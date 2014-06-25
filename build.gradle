@@ -75,22 +75,20 @@ dependencies {
 
 processResources {
     println env
-    println buildDir.absolutePath
-    println buildDir
-    println buildDir.name
-    println sourceSets.main.resources.name
-    println sourceSets.main.resources.asPath
-    from("src/config/$env") {
-        into sourceSets.main.resources.srcDirs
+    copy {
+        from "src/config/$env"
+        into "$buildDir/resources/main/"
+        include "**/*"
     }
 }
 
 task copyConfiguration << {
     println "Target environment: $env"
+    println "$buildDir"
 
     copy {
-        from "src/main/config/$env"
-        into "src/main/resources"
+        from "src/config/$env"
+        into "$buildDir/resources/main/"
         include "**/*"
     }
 }
