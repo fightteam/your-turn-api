@@ -2,9 +2,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java'
 apply plugin: "war"
 
-ext {
-    env = System.getProperty("env") ?: "local"
-}
 
 configurations {
     all*.exclude group: "commons-logging"
@@ -53,9 +50,11 @@ dependencies {
     compile "org.springframework:spring-webmvc:$springVersion"
     compile "org.springframework:spring-web:$springVersion"
 
+    // spring hateoas
+    compile "org.springframework.hateoas:spring-hateoas:$springHateoasVersion"
 
     // redis
-    compile "org.springframework.data:spring-data-redis:$springDataRedis"
+    compile "org.springframework.data:spring-data-redis:$springDataRedisVersion"
 
 	// library
 	compile "joda-time:joda-time:$jodaVersion",
