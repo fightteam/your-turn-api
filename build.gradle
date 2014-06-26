@@ -1,4 +1,4 @@
-
+import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java'
 apply plugin: "war"
 
@@ -73,24 +73,35 @@ dependencies {
         "org.hsqldb:hsqldb:$hsqldbVersion"
 }
 
-processResources {
-    println env
-    copy {
-        from "src/config/$env"
-        into "$buildDir/resources/main/"
-        include "**/*"
-    }
+// ==================================
+task dev(dependsOn:["compileJava", "processResources"]) {
+    println 'package war in dev environment'
 }
-
-task copyConfiguration << {
-    println "Target environment: $env"
-    println "$buildDir"
-
+dev << {
     copy {
-        from "src/config/$env"
+        from "$rootDir/src/config/dev"
         into "$buildDir/resources/main/"
         include "**/*"
     }
+    println ':classes'
+    classes.execute();
+    println ':war'
+    war.execute();
+}
+// ==================================
+task product(dependsOn:["compileJava", "processResources"]) {
+    println 'package war in product environment'
+}
+product << {
+    copy {
+        from "$rootDir/src/config/product"
+        into "$buildDir/resources/main/"
+        include "**/*"
+    }
+    println ':classes'
+    classes.execute();
+    println ':war'
+    war.execute();
 }
 
 task wrapper(type:Wrapper){

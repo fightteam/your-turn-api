@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
  * spring 的javaconfig配置
  */
 @Configuration
-@PropertySource(value = "classpath:public/app.properties")
+@PropertySource(value = "classpath:app.properties")
 @ComponentScan(basePackages = "org.fightteam.yourturn.api", excludeFilters = {
         @ComponentScan.Filter(Controller.class),
         @ComponentScan.Filter(ControllerAdvice.class),

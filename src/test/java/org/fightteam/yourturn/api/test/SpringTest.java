@@ -2,7 +2,6 @@ package org.fightteam.yourturn.api.test;
 
 import org.fightteam.yourturn.api.config.ApplicationConfig;
 import org.fightteam.yourturn.api.config.DataSourceConfig;
-import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -10,14 +9,12 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 /**
  * 单元测试基础类
- *
+ * <p>
  * 主要仿制了一个jndi来模拟Tomcat的Jndi数据连接池
  */
 @RunWith(SpringJUnit4ClassRunner.class)
