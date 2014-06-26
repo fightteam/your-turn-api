@@ -2,6 +2,7 @@ package org.fightteam.yourturn.api.core.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.ResourceSupport;
 
 /**
  * 首页页媒体数据
@@ -11,7 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class EngineVO{
+public class EngineVO {
     private String version = "1.0";
 
 }

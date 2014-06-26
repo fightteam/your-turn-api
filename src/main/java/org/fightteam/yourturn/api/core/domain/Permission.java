@@ -8,7 +8,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class Permission extends Entity<Long> {
+public class Permission extends AbstractEntity<Long> {
     private String name;
     private String title;
 

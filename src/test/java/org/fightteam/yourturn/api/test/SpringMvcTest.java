@@ -1,5 +1,6 @@
 package org.fightteam.yourturn.api.test;
 
+import org.fightteam.yourturn.api.config.WebRestConfig;
 import org.fightteam.yourturn.api.config.WebSpringConfig;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import static org.junit.Assert.*;
  * Created by excalibur on 2014/6/23.
  */
 @WebAppConfiguration
-@ContextConfiguration(classes = {WebSpringConfig.class})
+@ContextConfiguration(classes = {WebSpringConfig.class, WebRestConfig.class})
 public abstract class SpringMvcTest extends SpringTest {
 
     protected MockMvc mockMvc;

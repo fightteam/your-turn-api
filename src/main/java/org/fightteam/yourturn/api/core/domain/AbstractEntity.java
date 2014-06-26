@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.joda.time.DateTime;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
 /**
  * 实体抽象结构
  * <p>
@@ -14,7 +18,10 @@ import org.joda.time.DateTime;
  */
 @Getter
 @Setter
-public abstract class Entity<T> {
+@MappedSuperclass
+public abstract class AbstractEntity<T> {
+    @Id
+    @GeneratedValue
     private T id;
     private DateTime createTime;
     private DateTime updateTime;
@@ -22,11 +29,11 @@ public abstract class Entity<T> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Entity)) return false;
+        if (!(o instanceof AbstractEntity)) return false;
 
-        Entity entity = (Entity) o;
+        AbstractEntity abstractEntity = (AbstractEntity) o;
 
-        if (id != null ? !id.equals(entity.id) : entity.id != null) return false;
+        if (id != null ? !id.equals(abstractEntity.id) : abstractEntity.id != null) return false;
 
         return true;
     }

@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Role extends Entity<Long> {
+public class Role extends AbstractEntity<Long> {
     private String name;
     private String title;
 

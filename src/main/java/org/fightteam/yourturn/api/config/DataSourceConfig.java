@@ -8,19 +8,31 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.orm.jpa.JpaDialect;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.util.StringUtils;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Created by excalibur on 2014/6/24.
  */
 @Configuration
+@EnableJpaRepositories(basePackages = "org.fightteam.yourturn.api.dao")
 @EnableTransactionManagement
 public class DataSourceConfig {
 
@@ -31,6 +43,9 @@ public class DataSourceConfig {
 
     @Value("${database.lookupName}")
     private String lookupName;
+
+    @Value("${database.generateDdl}")
+    private boolean generateDdl;
 
     @Autowired
     private Environment env;
@@ -49,9 +64,66 @@ public class DataSourceConfig {
     }
 
     @Bean
+    public EntityManagerFactory entityManagerFactory() {
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+
+        vendorAdapter.setDatabase(isWhatDatabase(dataSource()));
+        vendorAdapter.setGenerateDdl(generateDdl);
+
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setPackagesToScan("org.fightteam.yourturn.api.core.domain");
+        factory.setDataSource(dataSource());
+
+        factory.afterPropertiesSet();
+
+        return factory.getObject();
+    }
+
+    @Bean
+    public JpaDialect jpaDialect() {
+        return new HibernateJpaDialect();
+    }
+
+    @Bean
     public PlatformTransactionManager transactionManager() {
-        DataSourceTransactionManager txManager = new DataSourceTransactionManager();
-        txManager.setDataSource(dataSource());
+        JpaTransactionManager txManager = new JpaTransactionManager();
+        txManager.setEntityManagerFactory(entityManagerFactory());
         return txManager;
+    }
+
+    private Database isWhatDatabase(DataSource dataSource){
+        // 从DataSource中取出jdbcUrl.
+        String jdbcUrl = null;
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            if (connection == null) {
+                throw new IllegalStateException("Connection returned by DataSource [" + dataSource + "] was null");
+            }
+            jdbcUrl = connection.getMetaData().getURL();
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not get database url", e);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        // 根据jdbc url判断dialect
+        if (jdbcUrl.indexOf(":h2:") != -1) {
+            return Database.H2;
+        } else if (jdbcUrl.indexOf(":mysql:") != -1) {
+            return Database.MYSQL;
+        } else if (jdbcUrl.indexOf(":oracle:") != -1) {
+            return Database.ORACLE;
+        } else if (jdbcUrl.indexOf(":hsqldb:") != -1) {
+            return Database.HSQL;
+        } else {
+            throw new IllegalArgumentException("Unknown Database of " + jdbcUrl);
+        }
     }
 }

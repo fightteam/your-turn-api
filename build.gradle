@@ -53,6 +53,17 @@ dependencies {
     // spring hateoas
     compile "org.springframework.hateoas:spring-hateoas:$springHateoasVersion"
 
+    // spring data rest
+    compile 'org.springframework.data:spring-data-rest-webmvc:2.1.0.RELEASE'
+
+    // spring data
+    compile "org.springframework.data:spring-data-rest-webmvc:2.1.0.RELEASE",
+    "org.springframework.data:spring-data-jpa:$springDataJpaVersion",
+    "org.springframework.data:spring-data-commons:$springDataCommonsVersion"
+
+    // hibernate
+    compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
+
     // redis
     compile "org.springframework.data:spring-data-redis:$springDataRedisVersion"
 
