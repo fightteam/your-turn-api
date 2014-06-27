@@ -80,7 +80,8 @@ dependencies {
     testCompile "junit:junit:$junitVersion",
         "org.hamcrest:hamcrest-library:$hamcrestVersion",
         "org.springframework:spring-test:$springVersion",
-        "org.hsqldb:hsqldb:$hsqldbVersion"
+        "org.hsqldb:hsqldb:$hsqldbVersion",
+        "com.jayway.jsonpath:json-path:$jsonpathVersion"
 }
 
 // ==================================

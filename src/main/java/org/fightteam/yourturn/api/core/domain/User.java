@@ -1,5 +1,6 @@
 package org.fightteam.yourturn.api.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User extends AbstractEntity<Long> {
     private String username;
+    @JsonIgnore
     private String password;
     private String nickname;
 }

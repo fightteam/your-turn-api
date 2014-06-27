@@ -1,10 +1,9 @@
 package org.fightteam.yourturn.api.web.controller;
 
-import org.fightteam.yourturn.api.core.domain.User;
-import org.springframework.data.rest.webmvc.RepositoryLinksResource;
-import org.springframework.hateoas.Link;
+import org.fightteam.yourturn.api.core.vo.EngineVO;
+import org.fightteam.yourturn.api.service.EngineService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceProcessor;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -14,39 +13,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 /**
  * 介于API没有UI界面,使用全部以json展现
- *
+ * <p>
  * 该页面主要是首页引导界面
  */
 @Controller
-public class EngineController implements ResourceProcessor<RepositoryLinksResource>{
+public class EngineController {
 
+    @Autowired
+    private EngineService engineService;
 
-    @RequestMapping(value = "/aaa", method = RequestMethod.GET)
-    public @ResponseBody
-    HttpEntity<Resources<Resource<User>>> index(){
-        User user = new User();
-        user.setId(1L);
-        user.setUsername("ffffff");
-        List<User> engineVOList = new ArrayList<>();
-        engineVOList.add(user);
-        Resources<Resource<User>> resources = Resources.wrap(engineVOList);
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    HttpEntity<Resources<Resource<EngineVO>>> index() {
 
+        EngineVO engineVO = engineService.loadEngineInfo();
+
+        List<EngineVO> engineVOs = Arrays.asList(engineVO);
+        Resources<Resource<EngineVO>> resources = Resources.wrap(engineVOs);
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
-
-    @Override
-    public RepositoryLinksResource process(RepositoryLinksResource resource) {
-
-        resource.add(linkTo(methodOn(EngineController.class).index()).withRel("aac"));
-//        resource.add();
-        return resource;
-    }
 }

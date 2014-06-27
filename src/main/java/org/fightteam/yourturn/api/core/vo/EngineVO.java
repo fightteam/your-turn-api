@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.hateoas.ResourceSupport;
 
 /**
- * 首页页媒体数据
+ * 首页媒体数据
  *
  * @author faith
  * @since 0.0.1
@@ -13,6 +13,7 @@ import org.springframework.hateoas.ResourceSupport;
 @Getter
 @Setter
 public class EngineVO {
-    private String version = "1.0";
+    // 标记api版本
+    private String version;
 
 }
