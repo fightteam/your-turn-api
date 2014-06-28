@@ -29,12 +29,12 @@ public class EngineController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    HttpEntity<Resources<Resource<EngineVO>>> index() {
+    HttpEntity<Resource<EngineVO>> index() {
 
         EngineVO engineVO = engineService.loadEngineInfo();
 
         List<EngineVO> engineVOs = Arrays.asList(engineVO);
-        Resources<Resource<EngineVO>> resources = Resources.wrap(engineVOs);
+        Resource<EngineVO> resources = new Resource<EngineVO>(engineVO);
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 

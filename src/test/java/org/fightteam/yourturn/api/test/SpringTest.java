@@ -2,6 +2,7 @@ package org.fightteam.yourturn.api.test;
 
 import org.fightteam.yourturn.api.config.ApplicationConfig;
 import org.fightteam.yourturn.api.config.DataSourceConfig;
+import org.fightteam.yourturn.api.config.WebRestConfig;
 import org.junit.runner.RunWith;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -18,7 +19,7 @@ import javax.sql.DataSource;
  * 主要仿制了一个jndi来模拟Tomcat的Jndi数据连接池
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ApplicationConfig.class, DataSourceConfig.class})
+@ContextConfiguration(classes = {ApplicationConfig.class, DataSourceConfig.class, WebRestConfig.class})
 public abstract class SpringTest {
 
     static {

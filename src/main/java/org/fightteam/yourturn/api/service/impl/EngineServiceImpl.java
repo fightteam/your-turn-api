@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EngineServiceImpl implements EngineService {
 
     @Value("${engine.version}")
-    private String version;
+    private int version;
 
     @Override
     public EngineVO loadEngineInfo() {

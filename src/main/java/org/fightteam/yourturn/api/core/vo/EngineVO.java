@@ -14,6 +14,6 @@ import org.springframework.hateoas.ResourceSupport;
 @Setter
 public class EngineVO {
     // 标记api版本
-    private String version;
+    private int version;
 
 }

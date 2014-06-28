@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
  * Created by excalibur on 2014/6/23.
  */
 @WebAppConfiguration
-@ContextConfiguration(classes = {WebSpringConfig.class, WebRestConfig.class})
+@ContextConfiguration(classes = {WebSpringConfig.class})
 public abstract class SpringMvcTest extends SpringTest {
 
     protected MockMvc mockMvc;

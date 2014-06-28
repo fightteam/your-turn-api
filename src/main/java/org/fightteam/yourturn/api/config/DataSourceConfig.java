@@ -47,9 +47,6 @@ public class DataSourceConfig {
     @Value("${database.generateDdl}")
     private boolean generateDdl;
 
-    @Autowired
-    private Environment env;
-
     @Bean
     public DataSource dataSource() {
         try {
