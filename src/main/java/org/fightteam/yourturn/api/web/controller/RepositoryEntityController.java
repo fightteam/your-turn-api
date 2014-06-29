@@ -31,7 +31,14 @@ public class RepositoryEntityController {
     @RequestMapping(value = BASE_MAPPING, method = RequestMethod.GET)
     public Resources<?> getCollectionResource(Pageable pageable, Sort sort) {
 
+        // 1.根据URI获取对应的repository 这部分需要获取对应的注解比对
+        // 注意异常处理
 
+        // 2.调用repository的对应方法获取对象
+
+        // 3.封装结果
+
+        // 4.返回
         Page<User> users = userRepository.findAll(pageable);
 
         Resources<?> resources = Resources.wrap(users);
