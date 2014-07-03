@@ -1,19 +1,16 @@
 package org.fightteam.yourturn.api.web.controller;
 
-import org.fightteam.yourturn.api.core.domain.User;
-import org.fightteam.yourturn.api.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.Resources;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ClassUtils;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,30 +26,51 @@ public class RepositoryEntityController {
     private static final String BASE_MAPPING = "/{repository}";
 
     @Autowired
-    private List<Repository> repositories;
+    private List<PagingAndSortingRepository> repositories;
 
     @Autowired
-    private UserRepository userRepository;
-    
+    private PagedResourcesAssembler pagedResourcesAssembler;
+
     @ResponseBody
     @RequestMapping(value = BASE_MAPPING, method = RequestMethod.GET)
-    public Resources<?> getCollectionResource(@PathVariable String repository, Pageable pageable, Sort sort) {
-        // TODO 分页工厂方法
+    public PagedResources<?> getCollectionResource(@PathVariable String repository,
+                                                   Pageable pageable) throws ResourceNotFoundException,
+            HttpRequestMethodNotSupportedException {
+
+        PagingAndSortingRepository pagingAndSortingRepository = null;
+
         // 1.根据URI获取对应的repository 这部分需要获取对应的注解比对
         // 注意异常处理
 
         // 根据 路径获取repository
+        for (PagingAndSortingRepository tmpRepository : repositories) {
+            RepositoryRestResource ann = AnnotationUtils.findAnnotation(tmpRepository.getClass(), RepositoryRestResource.class);
+            if (ann.path().equals(repository)) {
+                pagingAndSortingRepository = tmpRepository;
+                break;
+            }
+        }
 
+        // 异常处理
+        if (pagingAndSortingRepository == null) {
+            throw new ResourceNotFoundException();
+        }
         // 2.调用repository的对应方法获取对象
+        Page<?> pages = pagingAndSortingRepository.findAll(pageable);
 
         // 3.封装结果
+        PagedResources<?> pagedResources = pagedResourcesAssembler.toResource(pages);
+
+        // TODO 处理每个对象的自身链接
 
         // 4.返回
-        Page<User> users = userRepository.findAll(pageable);
-
-        Resources<?> resources = Resources.wrap(users);
-
-        return resources;
+        return pagedResources;
     }
+
+
+    // TODO 处理对象id查询
+
+
+
 
 }
