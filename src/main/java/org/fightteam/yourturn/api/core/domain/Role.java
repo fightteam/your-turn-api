@@ -3,6 +3,9 @@ package org.fightteam.yourturn.api.core.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * [description]
  *
@@ -11,6 +14,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Entity
+@Table(name = "role")
 public class Role extends AbstractEntity<Long> {
     private String name;
     private String title;
