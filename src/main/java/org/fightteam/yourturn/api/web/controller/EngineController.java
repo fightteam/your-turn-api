@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,24 +42,27 @@ public class EngineController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    HttpEntity<Resource<EngineVO>> index() {
+    HttpEntity<Resource<EngineVO>> index(HttpServletRequest request) {
 
         EngineVO engineVO = engineService.loadEngineInfo();
-
-        List<EngineVO> engineVOs = Arrays.asList(engineVO);
         Resource<EngineVO> resources = new Resource<EngineVO>(engineVO);
 
+        String baseUrl = getBaseUrl(request);
 
-        // TODO 初始化引擎入口
         for (Repository tmpRepository : repositories) {
             RepositoryRestResource ann = AnnotationUtils.findAnnotation(tmpRepository.getClass(), RepositoryRestResource.class);
 
-            Link link = new Link(ann.path(),ann.collectionResourceRel());
+            Link link = new Link(baseUrl+ann.path(),ann.collectionResourceRel());
             resources.add(link);
 
         }
 
         return new ResponseEntity<>(resources, HttpStatus.OK);
+    }
+
+
+    private String getBaseUrl(HttpServletRequest request){
+        return request.getRequestURL().toString();
     }
 
 }
