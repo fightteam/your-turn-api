@@ -31,8 +31,9 @@ public class RepositoryEntityController {
     @Autowired
     private PagedResourcesAssembler pagedResourcesAssembler;
 
-    @ResponseBody
+
     @RequestMapping(value = BASE_MAPPING, method = RequestMethod.GET)
+    @ResponseBody
     public PagedResources<?> getCollectionResource(@PathVariable String repository,
                                                    Pageable pageable) throws ResourceNotFoundException,
             HttpRequestMethodNotSupportedException {
@@ -71,6 +72,10 @@ public class RepositoryEntityController {
     // TODO 处理对象id查询
 
 
-
+    @RequestMapping(value = BASE_MAPPING+"/{}", method = RequestMethod.GET)
+    @ResponseBody
+    public Object a(){
+        return null;
+    }
 
 }
